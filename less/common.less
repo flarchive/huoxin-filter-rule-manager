@@ -1,0 +1,54 @@
+/**
+ * Filter Rule Manager - Common Styles
+ * 
+ * Shared LESS definitions imported by both Admin and Forum environments.
+ */
+
+@frm-info-bg:    #e8f4f8;
+@frm-info-color: #2b7c93;
+@frm-warning-bg: #fff4e5;
+@frm-warning-color: #8a6d3b;
+@frm-error-bg:   #fde8e8;
+@frm-error-color: #a94442;
+
+.FilterRuleManager-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.4;
+
+  &--info {
+    background: @frm-info-bg;
+    color: @frm-info-color;
+  }
+
+  &--warning {
+    background: @frm-warning-bg;
+    color: @frm-warning-color;
+  }
+
+  &--block {
+    background: @frm-error-bg;
+    color: @frm-error-color;
+  }
+
+  &-icon {
+    flex-shrink: 0;
+    font-size: 14px;
+    display: inline-flex;
+  }
+
+  &-title {
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  &-message {
+    flex: 1;
+    min-width: 0;
+    word-wrap: break-word;
+  }
+}
