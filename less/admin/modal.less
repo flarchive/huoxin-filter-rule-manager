@@ -1,0 +1,171 @@
+// Ruleset editor modal
+
+.FilterRuleManager-RulesetEditorModal {
+  .Modal-body {
+    padding: 20px 24px;
+  }
+}
+
+.FilterRuleManager-RulesetEditor-section {
+  background: var(--body-bg, @body-bg);
+  border: none;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.03);
+  padding: 24px;
+  margin-bottom: 24px;
+
+  &-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--control-bg-shaded, @control-bg);
+
+    &--with-toggle {
+      justify-content: space-between;
+      gap: 0;
+
+      .FilterRuleManager-RulesetEditor-section-header-title {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+    }
+
+    h4 {
+      margin: 0;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--heading-color, @heading-color);
+    }
+
+    i {
+      color: var(--primary-color, @primary-color);
+      font-size: 18px;
+    }
+  }
+
+  .Form-group {
+    margin-bottom: 20px;
+    &:last-child { margin-bottom: 0; }
+
+    > label {
+      display: block;
+      font-weight: 600;
+      color: var(--heading-color, @heading-color);
+      margin-bottom: 0;
+      font-size: 14px;
+    }
+  }
+
+  .FormControl {
+    background: var(--control-bg, @control-bg);
+    border: 2px solid transparent;
+    border-radius: var(--border-radius);
+    color: var(--control-color, @control-color);
+    transition: all 0.2s ease;
+    
+    &:focus {
+      background: var(--body-bg, @body-bg);
+      border-color: var(--primary-color, @primary-color);
+      box-shadow: none;
+      outline: none;
+    }
+  }
+
+  .helpText {
+    font-size: 12px;
+    color: var(--muted-color, @muted-color);
+    margin-top: 0;
+  }
+}
+// Live preview reuses the forum item styles
+.FilterRuleManager-preview {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: var(--border-radius);
+  font-size: 14px;
+  border-left: 3px solid transparent;
+
+  &.FilterRuleManager-item--info    { background: fade(@frm-info-color, 10%);    color: darken(@frm-info-color, 15%);    border-left-color: @frm-info-color; }
+  &.FilterRuleManager-item--warning { background: fade(@frm-warning-color, 10%); color: darken(@frm-warning-color, 15%); border-left-color: @frm-warning-color; }
+  &.FilterRuleManager-item--block   { background: fade(@frm-error-color, 10%);   color: darken(@frm-error-color, 15%);   border-left-color: @frm-error-color; }
+
+  .FilterRuleManager-item-icon { font-size: 16px; }
+}
+
+.FilterRuleManager-RulesetEditor-actions {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: flex-end;
+  padding-top: 12px;
+  border-top: 1px solid var(--control-bg, @control-bg);
+  margin-top: 8px;
+}
+
+.FilterRuleManager-RulesetEditor-divider {
+  border: none;
+  border-top: 1px solid var(--control-bg-shaded, @control-bg);
+  margin: 20px 0;
+}
+
+.FilterRuleManager-RulesetEditor-warningAlert {
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.FilterRuleManager-RulesetEditor-discardConfirmation {
+  text-align: center;
+  padding: 30px 10px;
+
+  .FilterRuleManager-RulesetEditor-discardIcon {
+    font-size: 3rem;
+    color: var(--error-color, @error-color);
+    margin-bottom: 20px;
+  }
+
+  .FilterRuleManager-RulesetEditor-discardTitle {
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: var(--heading-color, @heading-color);
+  }
+
+  .FilterRuleManager-RulesetEditor-discardMessage {
+    margin-bottom: 25px;
+    font-size: 1.1em;
+  }
+
+  .FilterRuleManager-RulesetEditor-discardActions {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 15px;
+
+    .Button {
+      width: auto;
+    }
+
+    .FilterRuleManager-RulesetEditor-discardCancel {
+      margin-left: 0;
+    }
+  }
+}
+
+// Import Modal essential styling
+.FilterRuleManager-ImportRulesetsModal {
+  .FilterRuleManager-ImportRulesetsModal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--heading-color);
+    }
+  }
+}
