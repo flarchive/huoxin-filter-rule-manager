@@ -1,0 +1,356 @@
+<?php
+
+/*
+ * This file is part of huoxin/filter-rule-manager.
+ *
+ * Copyright (c) 2026 huoxin.
+ *
+ * For the full copyright and license information, please view the LICENSE.md
+ * file that was distributed with this source code.
+ */
+
+namespace Huoxin\FilterRuleManager\Tests\integration;
+
+use Carbon\Carbon;
+use Huoxin\FilterRuleManager\Extend\FilterContentModifier;
+use Huoxin\FilterRuleManager\Model\EvaluationContext;
+use Huoxin\FilterRuleManager\Modifier\ModifierInterface;
+
+class StripQuotesModifier implements ModifierInterface
+{
+    public function key(): string
+    {
+        return 'strip_quotes';
+    }
+
+    public function name(): string
+    {
+        return 'Strip Quotes';
+    }
+
+    public function description(): string
+    {
+        return 'test';
+    }
+
+    public function modify(string $content, ?EvaluationContext $context = null): string
+    {
+        return preg_replace('/>.*?$/m', '', $content);
+    }
+}
+
+class StripSpoilersModifier implements ModifierInterface
+{
+    public function key(): string
+    {
+        return 'strip_spoilers';
+    }
+
+    public function name(): string
+    {
+        return 'Strip Spoilers';
+    }
+
+    public function description(): string
+    {
+        return 'test';
+    }
+
+    public function modify(string $content, ?EvaluationContext $context = null): string
+    {
+        return preg_replace('/\[spoiler\].*?\[\/spoiler\]/is', '', $content);
+    }
+}
+
+class StateTrackingModifier implements ModifierInterface
+{
+    public static int $executionCount = 0;
+
+    public function key(): string
+    {
+        return 'state_tracker';
+    }
+
+    public function name(): string
+    {
+        return 'State Tracker';
+    }
+
+    public function description(): string
+    {
+        return 'test';
+    }
+
+    public function modify(string $content, ?EvaluationContext $context = null): string
+    {
+        self::$executionCount++;
+
+        return $content; // Just track execution
+    }
+}
+
+class ContextTrackingModifier implements ModifierInterface
+{
+    public static ?EvaluationContext $lastContext = null;
+
+    public function key(): string
+    {
+        return 'context_tracker';
+    }
+
+    public function name(): string
+    {
+        return 'Context Tracker';
+    }
+
+    public function description(): string
+    {
+        return 'test';
+    }
+
+    public function modify(string $content, ?EvaluationContext $context = null): string
+    {
+        self::$lastContext = $context;
+
+        return $content;
+    }
+}
+
+class ModifierTest extends FilterTestCase
+{
+    protected function setUp(): void
+    {
+        $this->extend(
+            (new FilterContentModifier())
+                ->register(StripQuotesModifier::class)
+                ->register(StripSpoilersModifier::class)
+                ->register(StateTrackingModifier::class)
+                ->register(ContextTrackingModifier::class)
+        );
+
+        parent::setUp();
+
+        StateTrackingModifier::$executionCount = 0;
+        ContextTrackingModifier::$lastContext = null;
+    }
+
+    /** @test */
+    public function rule_evaluates_modified_content_properly()
+    {
+        // Rule: block 'badword', but we apply strip_spoilers modifier
+        $this->prepareDatabase([
+            'filter_rulesets' => [
+                [
+                    'id' => 1,
+                    'name' => 'Block Bad Words Ignoring Spoilers',
+                    'priority' => 0,
+                    'compiled_ast' => json_encode([
+                        'type' => 'rule',
+                        'provider' => 'builtin',
+                        'ruleType' => 'contains_word',
+                        'operator' => 'EQUALS',
+                        'targetModifiers' => ['strip_spoilers'],
+                        'value' => [
+                            'words' => ['badword']
+                        ]
+                    ]),
+                    'intervention_type' => 'block',
+                    'display_mode' => 'toast',
+                    'scope_type' => 'global',
+                    'is_active' => 1,
+                    'created_at' => Carbon::now()->toDateTimeString(),
+                    'updated_at' => Carbon::now()->toDateTimeString()
+                ]
+            ]
+        ]);
+
+        // If badword is inside spoiler, it gets stripped out before evaluation, so post is allowed
+        $response1 = $this->submitReply('This is a test [spoiler] badword [/spoiler]', 2);
+        $this->assertEquals(201, $response1->getStatusCode());
+
+        // If badword is outside spoiler, it gets detected and blocked
+        $response2 = $this->submitReply('This is a test badword [spoiler] clean [/spoiler]', 3);
+        $this->assertEquals(422, $response2->getStatusCode());
+    }
+
+    /** @test */
+    public function modifier_receives_evaluation_context()
+    {
+        $this->prepareDatabase([
+            'filter_rulesets' => [
+                [
+                    'id' => 1,
+                    'name' => 'Context Test',
+                    'priority' => 0,
+                    'compiled_ast' => json_encode([
+                        'type' => 'rule',
+                        'provider' => 'builtin',
+                        'ruleType' => 'contains_word',
+                        'operator' => 'EQUALS',
+                        'targetModifiers' => ['context_tracker'],
+                        'value' => [
+                            'words' => ['triggerword']
+                        ]
+                    ]),
+                    'intervention_type' => 'block',
+                    'display_mode' => 'toast',
+                    'scope_type' => 'global',
+                    'is_active' => 1,
+                    'created_at' => Carbon::now()->toDateTimeString(),
+                    'updated_at' => Carbon::now()->toDateTimeString()
+                ]
+            ]
+        ]);
+
+        $response = $this->submitReply('This is a test triggerword', 2);
+
+        $this->assertEquals(422, $response->getStatusCode());
+
+        $this->assertNotNull(ContextTrackingModifier::$lastContext);
+        $this->assertInstanceOf(EvaluationContext::class, ContextTrackingModifier::$lastContext);
+
+        // Assert the context has the post model
+        $this->assertNotNull(ContextTrackingModifier::$lastContext->post);
+        $this->assertInstanceOf(\Flarum\Post\Post::class, ContextTrackingModifier::$lastContext->post);
+
+        // Assert the post's discussion is also accessible
+        $this->assertNotNull(ContextTrackingModifier::$lastContext->post->discussion);
+    }
+
+    /** @test */
+    public function progressive_caching_optimizes_modifier_execution()
+    {
+        // Rule with two OR conditions that share the state_tracker modifier
+        $this->prepareDatabase([
+            'filter_rulesets' => [
+                [
+                    'id' => 1,
+                    'name' => 'Cache Test',
+                    'priority' => 0,
+                    'compiled_ast' => json_encode([
+                        'type' => 'logical',
+                        'operator' => 'OR',
+                        'left' => [
+                            'type' => 'rule',
+                            'provider' => 'builtin',
+                            'ruleType' => 'contains_word',
+                            'operator' => 'EQUALS',
+                            'targetModifiers' => ['state_tracker'],
+                            'value' => [
+                                'words' => ['word1']
+                            ]
+                        ],
+                        'right' => [
+                            'type' => 'rule',
+                            'provider' => 'builtin',
+                            'ruleType' => 'contains_word',
+                            'operator' => 'EQUALS',
+                            'targetModifiers' => ['state_tracker', 'strip_quotes'],
+                            'value' => [
+                                'words' => ['word2']
+                            ]
+                        ]
+                    ]),
+                    'intervention_type' => 'block',
+                    'scope_type' => 'global',
+                    'is_active' => 1,
+                    'created_at' => Carbon::now()->toDateTimeString(),
+                    'updated_at' => Carbon::now()->toDateTimeString()
+                ]
+            ]
+        ]);
+
+        $response = $this->submitReply('Test content', 4);
+        $this->assertEquals(201, $response->getStatusCode());
+
+        // Because of progressive caching, state_tracker should execute EXACTLY ONCE
+        // Even though it's referenced in two separate rules!
+        $this->assertEquals(1, StateTrackingModifier::$executionCount);
+    }
+
+    /** @test */
+    public function missing_modifier_fails_gracefully_and_returns_unmodified_content()
+    {
+        $this->prepareDatabase([
+            'filter_rulesets' => [
+                [
+                    'id' => 1,
+                    'name' => 'Missing Modifier Test',
+                    'priority' => 0,
+                    'compiled_ast' => json_encode([
+                        'type' => 'rule',
+                        'provider' => 'builtin',
+                        'ruleType' => 'contains_word',
+                        'operator' => 'EQUALS',
+                        'targetModifiers' => ['non_existent_modifier', 'strip_spoilers'],
+                        'value' => [
+                            'words' => ['badword']
+                        ]
+                    ]),
+                    'intervention_type' => 'block',
+                    'scope_type' => 'global',
+                    'is_active' => 1,
+                    'created_at' => Carbon::now()->toDateTimeString(),
+                    'updated_at' => Carbon::now()->toDateTimeString()
+                ]
+            ]
+        ]);
+
+        // Even though 'non_existent_modifier' is missing, it should continue to 'strip_spoilers' and evaluate
+        $response = $this->submitReply('Test [spoiler]badword[/spoiler]', 5);
+        $this->assertEquals(201, $response->getStatusCode());
+    }
+
+    /** @test */
+    public function modifier_does_not_leak_context_to_sibling_rules()
+    {
+        // Verify state isolation using an OR condition.
+        // Left Rule (strip_spoilers): Evaluates 'Test ' -> False (does not contain 'badword').
+        // Right Rule (no modifiers): Evaluates 'Test [spoiler]badword[/spoiler]' -> True.
+        // Expected outcome: False OR True = True (Blocked).
+        // If the stripped state leaked from Left to Right, both would evaluate to False (Allowed).
+        $this->prepareDatabase([
+            'filter_rulesets' => [
+                [
+                    'id' => 1,
+                    'name' => 'Sibling Rule Context Test OR',
+                    'priority' => 0,
+                    'compiled_ast' => json_encode([
+                        'type' => 'logical',
+                        'operator' => 'OR',
+                        'left' => [
+                            'type' => 'rule',
+                            'provider' => 'builtin',
+                            'ruleType' => 'contains_word',
+                            'operator' => 'EQUALS',
+                            'targetModifiers' => ['strip_spoilers'],
+                            'value' => [
+                                'words' => ['badword']
+                            ]
+                        ],
+                        'right' => [
+                            'type' => 'rule',
+                            'provider' => 'builtin',
+                            'ruleType' => 'contains_word',
+                            'operator' => 'EQUALS',
+                            'value' => [
+                                'words' => ['badword'],
+                            ]
+                        ]
+                    ]),
+                    'intervention_type' => 'block',
+                    'scope_type' => 'global',
+                    'is_active' => 1,
+                    'created_at' => Carbon::now()->toDateTimeString(),
+                    'updated_at' => Carbon::now()->toDateTimeString()
+                ]
+            ]
+        ]);
+
+        // Left Rule evaluates to False (stripped out).
+        // Right Rule evaluates to True (sees raw spoiler tag with badword).
+        // Overall is blocked (422). If context leaked from Left to Right, it would be allowed (201).
+        $response = $this->submitReply('Test [spoiler]badword[/spoiler]', 6);
+        $this->assertEquals(422, $response->getStatusCode());
+    }
+}
