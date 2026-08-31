@@ -1,0 +1,338 @@
+huoxin-filter-rule-manager:
+  admin:
+    # ── Page chrome ────────────────────────────────────────────────────────
+    tabs:
+      rulesets: "规则集"
+      registry: "已注册组件"
+      settings: "设置"
+    registry_tabs:
+      providers: "匹配引擎"
+      templates: "显示模板"
+      modes: "显示模式"
+    registry_headers:
+      global_tokens: "全局"
+    add_ruleset: "添加规则集"
+    edit_ruleset: "编辑规则集"
+    no_rulesets: "暂无规则集。请创建规则集以开始过滤帖子。"
+    no_rulesets_in_scope: "该应用范围内无适用规则。"
+    no_providers: "未检测到匹配引擎。请安装或启用相关扩展以添加规则类型。"
+    load_error: "加载过滤规则失败。"
+    save: "保存"
+    save_success: "规则集已保存。"
+    save_error: "保存规则集失败，请检查表单填写是否有误。"
+    delete: "删除"
+    delete_success: "规则集已删除。"
+    delete_error: "删除规则集失败。"
+    delete_ruleset_confirm: '确定删除规则集 "{name}" 吗？其包含的所有规则将被一并删除，且不可恢复。'
+    cancel: "取消"
+    edit: "编辑"
+    move_up: "上移"
+    move_down: "下移"
+    more_actions: "更多操作"
+    move_to_top: "移至顶部"
+    move_to_bottom: "移至底部"
+    duplicate: "复制规则集"
+    import: "导入"
+    export: "导出"
+    reorder_error: "保存排序失败，已重置为服务器最新状态。"
+    toggle_error: "更新规则集状态失败。"
+    active: "开启"
+    inactive: "关闭"
+    unsaved_changes_title: "未保存的更改"
+    unsaved_changes_message: "您有未保存的更改。确定要放弃这些更改吗？"
+    discard_changes: "放弃更改"
+    keep_editing: "继续编辑"
+
+    # ── Import/Export ──────────────────────────────────────────────────────
+    import_rulesets: "导入规则集"
+    import_json_label: "粘贴 JSON 数据"
+    upload_json: "上传 .json 文件"
+    import_override_mode: "覆盖现有规则集"
+    import_preserve_priority: "保留原始排序"
+    import_preserve_priority_help: "关闭时，导入的规则集将追加到您当前列表的底部并保持其相对顺序。开启时，它们将强制保留其原有的绝对排序数字。"
+    import_override_warning: "警告：这将永久删除所有现有的规则集，并用导入的规则集替换它们！"
+    import_override_confirm: "我明白这将删除我当前的规则集"
+    import_submit: "导入规则集"
+    import_invalid_json: "无效的 JSON 数据: {error}"
+    import_success: "规则集导入成功！"
+    export_all: "导出全部"
+
+    # ── List headers & Filters ─────────────────────────────────────────────
+    headers:
+      order: "排序"
+      name: "名称"
+      intervention: "干预方式"
+      scope: "应用范围"
+      display: "提示方式"
+      rules: "规则"
+      status: "状态"
+      active: "是否开启"
+      type: "类型"
+      label: "标签"
+      runs: "运行端"
+      tokens: "可用变量"
+      template: "模板"
+      component: "组件类"
+      has_settings: "包含设置界面"
+      identifier: "标识符"
+    scope_filters:
+      all: "全部"
+      global: "全局"
+      normal_post: "普通主题"
+      private_post: "私密主题"
+      tag: "指定标签"
+
+    # ── Settings Tab ───────────────────────────────────────────────────────
+    settings_header: "全局设置"
+    settings:
+      global_evaluate_title: "检查主题标题"
+      global_evaluate_title_help: "开启后，在检查主题的首个回复时，默认将主题标题拼接到正文前面一起检查。"
+      global_strict_edit_evaluation: "严格编辑检查"
+      global_strict_edit_evaluation_help: "开启后，任何编辑都会被严格检查，防止违规内容被变相“洗白”。"
+      global_auto_flag: "自动举报"
+      global_auto_flag_help: "开启后，触发此规则集的帖子将自动被举报并进入管理队列。（需要 flarum/flags 扩展）"
+      global_require_approval: "进入审核队列"
+      global_require_approval_help: "开启后，帖子将被隐藏，直到被管理团队批准。（需要 flarum/approval 扩展）"
+      global_evasion_active: "恶意绕过检测"
+      global_evasion_active_help: "开启后，若用户在被拦截后短时间内发布了正常帖子，该帖子仍将被自动举报以供审查。"
+      global_evasion_timeout: "检测时长（分钟）"
+      global_evasion_timeout_help: "在触发全局拦截规则后，用户处于被检测状态的时长。（默认：5）"
+      global_evasion_threshold: "触发阈值（拦截次数）"
+      global_evasion_threshold_help: "在检测时长内需达到多少次拦截才会触发规避惩罚。（默认：2）"
+      global_evasion_log_keep_days: "恶意绕过日志保留天数"
+      global_evasion_log_keep_days_help: "设置为 0 以禁用日志清理，永久保留日志。（默认：0）"
+      obfuscate_active: "启用前端规则有效载荷混淆"
+      obfuscate_active_help: "开启后，发送到浏览器的 提示 (Info) 和 警告 (Warning) 过滤规则 JSON 数据将经过 XOR 混淆，防止普通用户直接查看到过滤规则。"
+      obfuscate_key: "自定义混淆密钥"
+      obfuscate_key_help: "警告：此密钥将被发送至前端用于解码。请勿使用密码或任何敏感密钥！"
+
+    # ── Form labels ────────────────────────────────────────────────────────
+    ruleset_name: "名称"
+    ruleset_name_placeholder: "例如：拦截垃圾广告词"
+    ruleset_intervention_type: "干预方式"
+    ruleset_display_mode: "显示模式"
+    ruleset_display_template: "显示模板"
+    ruleset_custom_title: "自定义标题"
+    ruleset_custom_title_placeholder: "例如：警告！"
+    ruleset_custom_title_help: "可选。用于覆盖弹窗和提示条中的默认标题。您可以使用 '{{ token }}' 插入规则提取的变量值。变量内容会自动进行 HTML 转义；标题本身以可信方式渲染，允许使用简单的 HTML（如 '<br>'）。支持填写翻译键值。"
+    ruleset_toast_theme: "悬浮提示主题"
+    ruleset_toast_theme_auto: "自动（根据干预方式）"
+    ruleset_toast_theme_success: "成功（绿色）"
+    ruleset_toast_theme_error: "错误（红色）"
+    ruleset_toast_theme_warning: "警告（黄色）"
+    ruleset_custom_icon: "图标"
+    ruleset_custom_icon_color: "图标颜色"
+    ruleset_custom_text_color: "文本颜色"
+    ruleset_custom_bg_color: "背景颜色"
+    ruleset_custom_color_clear: "恢复默认"
+    ruleset_custom_color_transparent: "设置为透明"
+    ruleset_no_icon: "无"
+    ruleset_scope_type: "应用于"
+    ruleset_post_context: "发帖类型"
+    ruleset_post_context_help: "限制该规则集仅在新建讨论（首帖）时触发、仅在跟帖回复时触发，或对所有发帖均生效。"
+    ruleset_scope_tags: "指定标签 ID"
+    ruleset_primary_tags: => flarum-tags.admin.tags.primary_heading
+    ruleset_secondary_tags: => flarum-tags.admin.tags.secondary_heading
+    ruleset_scope_tags_help: "请选择您希望此规则集应用到的标签。当主题包含这些标签中的任意一个时，此规则集将会生效。"
+    ruleset_bypass_groups: "跳过以下用户组"
+    ruleset_bypass_groups_help: "属于这些用户组的用户将完全跳过该规则集的检查。"
+    ruleset_message: "提示内容"
+    ruleset_message_placeholder: "您的帖子包含违规词汇：'{{ matched_word }}'"
+    ruleset_is_active: "开启"
+
+    ruleset_block_cascade: "触发此规则集后停止后续匹配"
+    ruleset_block_cascade_help: "适用于所有执行动作。用于在匹配成功后立即短路终止后续相关规则集的检查。"
+    ruleset_evaluate_all_rules: "匹配所有规则（聚合变量）"
+    ruleset_evaluate_all_rules_help: "开启后，引擎将检查此规则集中的所有规则，即使已经找到匹配项。这允许您收集所有命中的变量用于自定义消息。如果关闭，引擎在找到第一个匹配项后就会立即停止，以提高性能。"
+    ruleset_evaluate_title: "检查主题标题"
+    ruleset_evaluate_title_help: "开启后，在检查主题的首个回复时，会将主题标题拼接到正文前面一起检查。"
+    ruleset_auto_flag: "匹配时自动举报"
+    ruleset_auto_flag_help: "开启后，触发此规则集的帖子将自动被举报并进入管理队列。（需要 flarum/flags 扩展）"
+    ruleset_require_approval: "匹配时进入审核队列"
+    ruleset_require_approval_help: "开启后，帖子将被隐藏，直到被管理团队批准。（需要 flarum/approval 扩展）"
+    ruleset_strict_edit: "严格编辑检查"
+    ruleset_strict_edit_help: "开启后，该规则组将完全禁用“差异化检查 (Differential Evaluation)”。包含违规内容的帖子哪怕曾被管理人员批准过，在后续任何编辑时都会被重新拦截/标记，彻底杜绝“钻空子”现象。"
+    ruleset_approval_without_flag_warning: "在不开启自动举报的情况下要求审核，意味着帖子会被隐藏，但管理团队不会在举报队列中收到通知。"
+    ruleset_exposed_warning_text: "因为此操作模式不会在后端拦截帖子，其规则配置将被发送到前端进行本地匹配。尽管配置已被混淆，但有技术能力的用户仍可解密并查看您的过滤规则。"
+    ruleset_evasion_active: "开启恶意绕过检测"
+    ruleset_evasion_active_help: "开启后，若用户在被拦截后短时间内发布了正常帖子，该帖子仍将被自动举报以供审查。"
+    ruleset_evasion_timeout: "检测时长（分钟）"
+    ruleset_evasion_timeout_help: "在触发此规则集拦截后，用户处于被检测状态的时长。"
+    ruleset_evasion_threshold: "触发阈值（拦截次数）"
+    ruleset_evasion_threshold_help: "在检测时长内需达到多少次拦截才会触发规避惩罚。"
+    ruleset_flag_message: "自定义举报/审核理由"
+    ruleset_flag_message_placeholder: "例如：命中违规词汇：'{{ matched_word }}'"
+    ruleset_flag_message_help: "可选。定义触发此规则集时管理团队看到的具体理由。留空则使用默认通用理由。支持填写翻译键值。"
+
+    inherit_global_default: "继承全局默认值"
+    force_enabled: "强制开启"
+    force_disabled: "强制关闭"
+
+    message_help: "您可以使用 '{{ token }}' 插入规则提取的变量值。变量内容会自动进行 HTML 转义；模板本身以可信方式渲染，允许使用简单的 HTML（如 '<br>'）。支持填写翻译键值。"
+    preview: "预览"
+    preview_placeholder: "提示内容将显示在这里。"
+
+    # ── Section titles in the editor ───────────────────────────────────────
+    section_general: "常规"
+    section_scope: "应用范围"
+    section_display: "显示"
+    section_moderation: "审核操作"
+    section_rules: "规则"
+
+    # ── Intervention / scope / display / modifiers labels ────────────────────────────────────
+    interventions:
+      info: "提示 (Info)"
+      info_help: "用户输入时实时显示的提示信息。不会阻止发帖。"
+      warning: "警告 (Warning)"
+      warning_help: "用户输入时实时显示的警告信息。发帖前需要用户手动确认。"
+      block: "拦截 (Block)"
+      block_help: "提交时在服务端进行检查。拦截帖子并向用户显示提示内容。"
+      silent: "静默 (Silent)"
+      silent_help: "不对用户显示任何提示。在服务端静默检查，用于触发自动举报或进入审核队列。"
+
+    scopes:
+      global: "所有帖子"
+      normal_post: "普通主题"
+      private_post: "私密主题"
+      tag: "指定标签"
+
+    post_contexts:
+      all: "所有发帖"
+      discussion_start: "仅限新建讨论（首帖）"
+      reply: "仅限跟帖回复"
+
+    runs:
+      global: "全局"
+      backend: "后端"
+      frontend: "前端"
+      both: "前端+后端"
+
+    templates:
+      builtin: "内置"
+
+    providers:
+      builtin: "内置"
+
+    modifiers:
+      entire_post: "完整内容"
+      multiple_selected: "{count} 个预处理器"
+      strip_mentions: "剔除提及"
+      strip_mentions_help: "在将文本送往此规则检查之前，先删除其中包含的所有用户提及和回帖提及，防止由于提及的用户名含有敏感词而引发误报。"
+      strip_upload_tags: "剔除 FoF Upload 标签"
+      strip_upload_tags_help: "在将文本送往此规则检查之前，先删除其中包含的 [upl-image-preview] 等 fof/upload 附件短代码。"
+      strip_images: "剔除外部图片"
+      strip_images_help: "在将文本送往此规则检查之前，先删除其中包含的 [img] 和 Markdown 图片 (![...](...))。"
+      strip_urls: "剔除链接"
+      strip_urls_help: "在将文本送往此规则检查之前，先删除其中包含的所有 http/https 网址。"
+
+    displays:
+      none: "无 (隐藏)"
+      none_help: "前端不显示任何提示UI。"
+      banner: "顶部横幅"
+      banner_help: "在整个发帖框上方渲染全宽横幅（位于 .App-composer > .container 内部，#composer 之前）。在视觉上与发帖框对齐。"
+      header_banner: "标题栏横幅"
+      header_banner_help: "渲染在发帖框标题栏内部、文本输入区正上方的较窄横幅。"
+      sidebar: "侧边栏卡片"
+      sidebar_help: "固定在发帖框右侧的垂直卡片（在移动设备上会自动折叠显示）。"
+      toast: "悬浮提示"
+      toast_help: "页面顶部的瞬时通知。如果在触发规则时用户手动关闭了它，它将重新出现。"
+      modal: "弹窗"
+      modal_help: "打断用户操作的模态对话框。每次规则集触发时只显示一次——仅在规则清除并再次命中后才会重新弹出。"
+
+    # ── Rule Builder ───────────────────────────────────────────────────────
+    rule_builder:
+      visual_builder: "可视化构建器"
+      expression_editor: "表达式编辑器"
+      parse_error: "解析错误："
+      parse_error_help: "请在切换到可视化构建器之前修复编辑器中的表达式错误。"
+      editor_help: "使用 <code>引擎.类型 运算符 值</code> 的格式编写表达式。可使用 <code>AND</code>、<code>OR</code> 和 <code>( )</code> 进行分组。"
+      negate: "取反 (NOT)"
+      add_rule: "添加规则"
+      delete_rule: "删除规则"
+      unknown_node_type: "未知的节点类型"
+      value_placeholder: "值..."
+      editor_placeholder: "例如：builtin.contains_word eq ['crypto'] AND (builtin.regex eq '/spam/i' OR ...)"
+      and: "并且 (AND)"
+      or: "或者 (OR)"
+      not: "非 (NOT)"
+
+    tokens_available: "可用变量 — 点击插入"
+    tokens_none: "暂无可用变量。添加规则后即可查看其提供的变量。"
+    token_rule_name_desc: "触发的规则集名称"
+    token_matched_text_desc: "跨所有内容规则聚合的匹配文本"
+    token_matched_word_desc: "列表中命中的具体违规词"
+    token_matched_pattern_desc: "触发规则的正则表达式定义"
+    token_matched_string_desc: "正则捕获到的文本子串"
+    token_matched_group_desc: "触发规则的用户组 ID"
+    token_word_count_desc: "当前帖子计算出的字数/字符数"
+
+    # ── Built-in Rules Config ──────────────────────────────────────────────
+    type_contains_word: "包含以下词汇"
+    type_regex: "匹配正则表达式"
+    type_group: "用户属于指定用户组"
+    type_word_count: "字数/词数限制"
+    type_rule_triggered: "命中其他规则"
+
+    config_rule_triggered_match_rule_id: "指定规则"
+    config_rule_triggered_match_rule_id_help: "选择依赖的特定规则。如果选择此项，下面的其他筛选条件将被忽略。"
+    config_rule_triggered_match_name: "名称（包含或正则）"
+    config_rule_triggered_match_name_help: "留空表示匹配任意规则。输入文本表示仅当触发规则的名称包含该文本时才触发。您也可以使用正则表达式（将其包裹在斜杠中），例如 `/^Rule/i`。"
+    config_rule_triggered_match_scope: "应用于"
+    config_rule_triggered_match_scope_help: "仅当命中的规则应用范围符合此选项时才触发。"
+    config_rule_triggered_match_intervention: "干预方式"
+    config_rule_triggered_match_intervention_help: "仅当命中的规则使用此干预方式时才触发。"
+    config_rule_triggered_match_display: "显示模式"
+    config_rule_triggered_match_display_help: "仅当命中的规则使用此显示模式时才触发。"
+    config_rule_triggered_any: "任意"
+    config_rule_triggered_position_warning: "注意：此规则对排序敏感。它只能检测到在规则列表中排在它上方的规则。"
+
+    config_groups_label: "选择用户组"
+    config_groups_help: "如果发帖用户属于所选任意一个用户组，则触发该规则。命中的用户组 ID 将作为 '{{ matched_group }}' 变量提供。"
+
+    config_words_label: "单词 / 短语"
+    config_words_placeholder: "垃圾邮件\n钓鱼\n抽奖"
+    config_words_help: "每行一个单词或短语。如果帖子包含其中任意一个（不区分大小写），则触发规则。首个命中的词汇将作为 '{{ matched_word }}' 变量用于提示内容。"
+    config_patterns_label: "正则表达式模式"
+    config_patterns_placeholder: "https?://(bit\\.ly|tinyurl)/\n^[A-Z\\s!]'{20,}'$"
+    config_patterns_help: "每行一个模式。裸模式将进行不区分大小写的匹配；可使用 /pattern/flags 这种 PCRE 完整格式以获得更精确的控制。首个匹配项将作为 '{{ matched_pattern }}' 和 '{{ matched_string }}' 变量提供。"
+
+    config_word_count_min: "最少字数/词数"
+    config_word_count_max: "最多字数/词数"
+    config_word_count_help: "提示：中日韩文字将按单个字符计算；其他文本（英文、数字等）按空格切分的单词计算。例如，'hello world' 记为 2 个单词，'你好' 记为 2 个字符。"
+
+    rule_scan_all: "匹配所有结果"
+    rule_scan_all_help: "开启后，系统将在警告消息中列出所有匹配的词汇或模式。如果关闭，则仅列出第一个匹配项。"
+    rule_regex_warning: "正则表达式会在每次保存帖子时在服务端执行。请避免使用可能导致灾难性回溯的写法（例如像 (a+)+ 这样的嵌套量词）—— 保持正则模式简单并做好边界定位。"
+    token_badge_universal: "聚合"
+
+    # ── Validation messages ────────────────────────────────────────────────
+    validation:
+      name_required: "请为该规则集提供一个名称。"
+      tags_required: "已选择按标签应用 — 请至少填写一个标签 ID。"
+      expression_required: "表达式不能为空。"
+      invalid_ruleset_ids: "一个或多个规则集 ID 无效或不存在。"
+
+    # ── Permissions ────────────────────────────────────────────────────────
+    permissions:
+      bypass_all_rules: "跳过所有过滤规则"
+
+  forum:
+    # ── Warning confirmation modal ─────────────────────────────────────────
+    warning_modal_title: "发帖确认"
+    warning_modal_text: "您的帖子触发了以下警告，确定要继续发布吗？"
+    warning_modal_continue: "继续发布"
+    warning_modal_cancel: "返回编辑"
+
+    # ── Alert modal titles ─────────────────────────────────────────────────
+    modal_title_info: "提示"
+    modal_title_warning: "警告"
+    modal_title_block: "帖子被拦截"
+    modal_ok: "确定"
+
+    # ── Sidebar ────────────────────────────────────────────────────────────
+    sidebar_title: "发帖提示"
+
+    # ── Auto Flag ──────────────────────────────────────────────────────────
+    flag_message: "由过滤规则管理器自动举报。触发的规则集：{rulesets}"
+    flagger_name: "过滤规则管理器"
+    evasion_flag_message: "可疑行为：该用户最近被规则集 '{ruleset}' 拦截后，随即成功提交了此帖。请审查是否存在绕过过滤的行为。"
