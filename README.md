@@ -2,13 +2,24 @@
 
 > **Read-only archive of released versions of huoxin/filter-rule-manager.** Not for installation: use [Packagist](https://packagist.org/packages/huoxin/filter-rule-manager) or the [upstream repository](https://github.com/huoxin233/flarum-ext-filter-rule-manager).
 
-**0** versions archived · Latest: [`2.0.0-beta.6`](https://github.com/flarchive/huoxin-filter-rule-manager/tree/archive/v2.0.0-beta.6) · License: `MIT` · Flarum: `^2.0.0-rc`
+**18** versions archived · Latest: [`2.0.0-beta.6`](https://github.com/flarchive/huoxin-filter-rule-manager/tree/archive/v2.0.0-beta.6) · License: `MIT` · Flarum: `^2.0.0-rc`
 
 ## Archived Versions
 
 | Version | Released | Flarum | Source |
 |---|---|---|---|
-| — | — | — | — |
+| `1.0.0-beta.1` | 2026-06-19 | `^1.2.0` | [Browse](https://github.com/flarchive/huoxin-filter-rule-manager/tree/archive/v1.0.0-beta.1) |
+| `1.0.0-beta.10` | 2026-07-27 | `^1.2.0` | [Browse](https://github.com/flarchive/huoxin-filter-rule-manager/tree/archive/v1.0.0-beta.10) |
+| `1.0.0-beta.11` | 2026-08-12 | `^1.2.0` | [Browse](https://github.com/flarchive/huoxin-filter-rule-manager/tree/archive/v1.0.0-beta.11) |
+| `1.0.0-beta.12` | 2026-08-31 | `^1.2.0` | [Browse](https://github.com/flarchive/huoxin-filter-rule-manager/tree/archive/v1.0.0-beta.12) |
+| `1.0.0-beta.2` | 2026-06-19 | `^1.2.0` | [Browse](https://github.com/flarchive/huoxin-filter-rule-manager/tree/archive/v1.0.0-beta.2) |
+| `1.0.0-beta.3` | 2026-06-21 | `^1.2.0` | [Browse](https://github.com/flarchive/huoxin-filter-rule-manager/tree/archive/v1.0.0-beta.3) |
+| `1.0.0-beta.4` | 2026-06-27 | `^1.2.0` | [Browse](https://github.com/flarchive/huoxin-filter-rule-manager/tree/archive/v1.0.0-beta.4) |
+| `1.0.0-beta.5` | 2026-06-29 | `^1.2.0` | [Browse](https://github.com/flarchive/huoxin-filter-rule-manager/tree/archive/v1.0.0-beta.5) |
+| `1.0.0-beta.6` | 2026-06-29 | `^1.2.0` | [Browse](https://github.com/flarchive/huoxin-filter-rule-manager/tree/archive/v1.0.0-beta.6) |
+| `1.0.0-beta.7` | 2026-06-30 | `^1.2.0` | [Browse](https://github.com/flarchive/huoxin-filter-rule-manager/tree/archive/v1.0.0-beta.7) |
+
+[View all 18 versions](https://github.com/flarchive/huoxin-filter-rule-manager/tags)
 
 Catalog entry: [packages/huoxin-filter-rule-manager.json](https://github.com/flarchive/archive-index/blob/main/packages/huoxin-filter-rule-manager.json)
 
