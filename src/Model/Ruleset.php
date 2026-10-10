@@ -1,0 +1,89 @@
+<?php
+
+/*
+ * This file is part of huoxin/filter-rule-manager.
+ *
+ * Copyright (c) 2026 huoxin.
+ *
+ * For the full copyright and license information, please view the LICENSE.md
+ * file that was distributed with this source code.
+ */
+
+namespace Huoxin\FilterRuleManager\Model;
+
+use Carbon\Carbon;
+use Flarum\Database\AbstractModel;
+use Illuminate\Database\Eloquent\Builder;
+
+/**
+ * @property int    $id
+ * @property string $name
+ * @property int    $priority
+ * @property string|null $expression
+ * @property array|null $compiled_ast
+ * @property string $intervention_type    info|warning|block|silent
+ * @property string $display_mode   banner|header_banner|toast|modal|sidebar
+ * @property string $message
+ * @property string|null $flag_message
+ * @property bool   $evaluate_all_rules
+ * @property bool|null $evaluate_title
+ * @property bool|null $evasion_active
+ * @property int|null  $evasion_timeout
+ * @property int|null  $evasion_threshold
+ * @property bool   $block_cascade
+ * @property bool   $is_active
+ * @property string $scope_type     global|normal_post|private_post|tag
+ * @property string $post_context    all|discussion_start|reply
+ * @property array|null $scope_tag_ids
+ * @property array|null $bypass_group_ids
+ * @property bool|null $auto_flag
+ * @property bool|null $require_approval
+ * @property bool|null $strict_edit
+ * @property array|null $display_settings
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ */
+class Ruleset extends AbstractModel
+{
+    public $timestamps = true;
+
+    protected $table = 'filter_rulesets';
+
+    protected $casts = [
+        'compiled_ast' => 'array',
+        'block_cascade' => 'boolean',
+        'is_active' => 'boolean',
+        'evaluate_title' => 'boolean',
+        'evaluate_all_rules' => 'boolean',
+        'evasion_active' => 'boolean',
+        'evasion_timeout' => 'integer',
+        'evasion_threshold' => 'integer',
+        'auto_flag' => 'boolean',
+        'require_approval' => 'boolean',
+        'post_context' => 'string',
+        'scope_tag_ids' => 'array',
+        'bypass_group_ids' => 'array',
+        'strict_edit' => 'boolean',
+        'display_settings' => 'array',
+    ];
+
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->where('is_active', true);
+    }
+
+    public function scopeBlock(Builder $query): Builder
+    {
+        return $query->where('intervention_type', 'block');
+    }
+
+    public function scopeFrontend(Builder $query): Builder
+    {
+        return $query->whereIn('intervention_type', ['info', 'warning']);
+    }
+
+    public function scopeOrdered(Builder $query): Builder
+    {
+        return $query->orderBy('priority');
+    }
+}
