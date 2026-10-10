@@ -1,0 +1,241 @@
+// RuleBuilder
+
+.FilterRuleManager-ConfigForm {
+  background: transparent;
+  border: none;
+  padding: 0;
+  box-shadow: none;
+
+  > label {
+    display: block;
+    font-weight: 700;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted-color, @muted-color);
+    margin-bottom: 8px;
+  }
+
+  textarea.FilterRuleManager-LinesInput {
+    background: var(--body-bg, @body-bg);
+    border: 1px solid var(--control-bg-shaded, rgba(0, 0, 0, 0.1));
+    font-size: 13px;
+    line-height: 1.5;
+    resize: vertical;
+    
+    &:focus {
+      border-color: var(--primary-color, @primary-color);
+    }
+  }
+}
+
+.FilterRuleManager-Expression-LogicalNode {
+  .FilterRuleManager-LogicalNode-andContainer {
+    margin-left: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 40px;
+  }
+  .FilterRuleManager-LogicalNode-connector {
+    width: 1px;
+    height: 15px;
+    background: var(--control-bg-shaded);
+  }
+  .FilterRuleManager-LogicalNode-andButton {
+    background: var(--control-bg-light);
+    border: 1px solid var(--control-bg-shaded);
+    padding: 2px 8px;
+    font-size: 12px;
+  }
+  .FilterRuleManager-LogicalNode-orContainer {
+    margin: 20px 0;
+  }
+  .FilterRuleManager-LogicalNode-orButton {
+    background: var(--control-bg-light);
+    border: 1px solid var(--control-bg-shaded);
+    padding: 4px 12px;
+    font-size: 13px;
+  }
+}
+
+.FilterRuleManager-Expression-RuleNode {
+  background: var(--body-bg, @body-bg);
+  padding: 15px;
+  border-radius: 4px;
+  border: 1px solid var(--control-bg-shaded);
+  width: 100%;
+
+  .FilterRuleManager-RuleNode-header {
+    display: grid;
+    grid-template-columns: 1fr auto auto auto;
+    gap: 15px;
+    align-items: center;
+    margin-bottom: 15px;
+
+    .Select {
+      min-width: 0;
+
+      > select {
+        width: 100%;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+      }
+    }
+
+    .FilterRuleManager-RuleNode-modifiers {
+      display: flex;
+      align-items: center;
+      min-width: 0;
+
+
+      .FilterRuleManager-Modifiersequence {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+        text-align: center;
+        margin-right: 8px;
+        background: var(--primary-color);
+        color: var(--button-primary-color);
+        border-radius: var(--border-radius);
+        font-weight: bold;
+        font-size: 12px;
+
+        &.empty {
+          background: transparent;
+          color: transparent;
+          opacity: 0;
+        }
+      }
+
+
+    }
+  }
+  .FilterRuleManager-RuleNode-negateToggle {
+    padding-left: 10px;
+    border-left: 1px solid var(--control-bg-shaded);
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+  }
+  .FilterRuleManager-RuleNode-actions {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  @media (max-width: 767px) {
+    .FilterRuleManager-RuleNode-header {
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    .FilterRuleManager-RuleNode-negateToggle {
+      padding-left: 0;
+      border-left: none;
+      flex: 1;
+    }
+    .FilterRuleManager-RuleNode-actions {
+      width: 100%;
+      .Button {
+        width: 100%;
+      }
+    }
+  }
+}
+
+.FilterRuleManager-NodeView-ruleContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.FilterRuleManager-Expression-NotNode {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  width: 100%;
+
+  .FilterRuleManager-NotNode-label {
+    display: flex;
+    align-items: center;
+    background: var(--control-bg-shaded);
+    padding: 0 10px;
+    border-radius: 4px;
+    border: 1px solid var(--control-bg-shaded);
+    font-weight: bold;
+  }
+}
+
+.FilterRuleManager-RuleBuilder {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--body-bg);
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid var(--control-bg-shaded);
+
+  .FilterRuleManager-RuleBuilder-tabs {
+    display: flex;
+    gap: 4px;
+    background: var(--control-bg, @control-bg);
+    padding: 4px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    width: 100%;
+
+    @media (max-width: 767px) {
+      flex-direction: column;
+    }
+  }
+
+  .FilterRuleManager-RuleBuilder-tabButton {
+    flex: 1;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    color: var(--muted-color, @muted-color);
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 150ms ease;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    box-shadow: none;
+
+    &:hover {
+      background: rgba(127, 127, 127, 0.1);
+    }
+
+    &.active {
+      background: var(--body-bg, @body-bg);
+      color: var(--primary-color, @primary-color);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+      font-weight: 700;
+    }
+  }
+
+  .FilterRuleManager-RuleBuilder-errorAlert {
+    margin-bottom: 15px;
+  }
+  .FilterRuleManager-RuleBuilder-appendButtons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+  }
+  .FilterRuleManager-RuleBuilder-appendButton {
+    background: var(--control-bg-light);
+    border: 1px solid var(--control-bg-shaded);
+    padding: 4px 12px;
+  }
+  .FilterRuleManager-RuleBuilder-textarea {
+    font-family: monospace;
+  }
+  .FilterRuleManager-RuleBuilder-editorHelp {
+    margin-top: 10px;
+  }
+}

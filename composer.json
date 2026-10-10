@@ -1,0 +1,119 @@
+{
+    "name": "huoxin/filter-rule-manager",
+    "description": "A powerful and customizable AST-based moderation and filtering engine for Flarum.",
+    "keywords": [
+        "flarum",
+        "moderation",
+        "filter",
+        "rule",
+        "manager",
+        "automod",
+        "AST"
+    ],
+    "type": "flarum-extension",
+    "license": "MIT",
+    "support": {
+        "issues": "https://github.com/huoxin233/flarum-ext-filter-rule-manager/issues",
+        "source": "https://github.com/huoxin233/flarum-ext-filter-rule-manager",
+        "forum": "https://discuss.flarum.org/d/39451"
+    },
+    "require": {
+        "flarum/core": "^1.2.0"
+    },
+    "authors": [
+        {
+            "name": "huoxin",
+            "email": "23447157+huoxin233@users.noreply.github.com",
+            "role": "Developer"
+        }
+    ],
+    "funding": [
+        {
+            "type": "buymeacoffee",
+            "url": "https://www.buymeacoffee.com/huoxin"
+        },
+        {
+            "type": "ko-fi",
+            "url": "https://ko-fi.com/huoxin"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Huoxin\\FilterRuleManager\\": "src/"
+        }
+    },
+    "extra": {
+        "flarum-extension": {
+            "title": "Filter Rule Manager",
+            "category": "moderation",
+            "icon": {
+                "name": "fas fa-filter",
+                "color": "#fff",
+                "backgroundColor": "#9A2424"
+            },
+            "database-support": [
+                "mysql",
+                "mariadb",
+                "pgsql",
+                "sqlite"
+            ],
+            "optional-dependencies": [
+                "flarum/approval",
+                "flarum/flags",
+                "flarum/tags"
+            ]
+        },
+        "flarum-cli": {
+            "modules": {
+                "admin": true,
+                "forum": true,
+                "js": true,
+                "jsCommon": true,
+                "css": true,
+                "locale": true,
+                "gitConf": true,
+                "githubActions": true,
+                "prettier": true,
+                "typescript": true,
+                "bundlewatch": false,
+                "backendTesting": true,
+                "editorConfig": true,
+                "styleci": true,
+                "phpstan": true
+            }
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload-dev": {
+        "psr-4": {
+            "Huoxin\\FilterRuleManager\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": [
+            "@test:unit",
+            "@test:integration"
+        ],
+        "test:unit": "phpunit -c tests/phpunit.unit.xml",
+        "test:integration": "phpunit -c tests/phpunit.integration.xml",
+        "test:setup": "@php tests/integration/setup.php",
+        "analyse:phpstan": "phpstan analyse",
+        "clear-cache:phpstan": "phpstan clear-result-cache"
+    },
+    "scripts-descriptions": {
+        "test": "Runs all tests.",
+        "test:unit": "Runs all unit tests.",
+        "test:integration": "Runs all integration tests.",
+        "test:setup": "Sets up a database for use with integration tests. Execute this only once.",
+        "analyse:phpstan": "Run static analysis"
+    },
+    "require-dev": {
+        "flarum/testing": "^1.0.0",
+        "flarum/approval": "^1.8.0",
+        "flarum/flags": "^1.8.0",
+        "flarum/tags": "^1.8.0",
+        "fof/byobu": "^1.0.0",
+        "flarum/phpstan": "^1.8"
+    }
+}
